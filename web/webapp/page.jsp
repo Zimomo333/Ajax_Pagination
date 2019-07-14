@@ -26,33 +26,21 @@
     $(function(){
         $.ajax({
             url:"/AjaxServlet",
-            data:"",
+            data:{},
             dataType:"json",
             type:"post",
             success:function(obj){
                 //alert("fun");
-                for(var i=0;i<obj.length;i++){
+                for(var i=0;i<obj[1].length;i++){
                     $("table tr:first").after(
-                        "<tr id='list'><td>"+obj[i].goods_name+"</td><td>"+obj[i].goods_desc+"</td><td>"+obj[i].price+"</td></tr>"
+                        "<tr id='list'><td>"+obj[1][i].goods_name+"</td><td>"+obj[1][i].goods_desc+"</td><td>"+obj[1][i].price+"</td></tr>"
                     )
                 }
-            }
-
-        });
-    })
-    $(function() {
-        $.ajax({
-            url:"/AjaxServlet?method=getPage",
-            data:"",
-            dataType:"json",
-            type:"post",
-            success:function(obj){
-//				alert("dfa");
-                $("#page").text(obj.currentPage+"/"+obj.lastPage);
+                $("#page").text(obj[0].currentPage+"/"+obj[0].lastPage);
                 $(".frstn")[0].id=1;
-                $(".prvtn")[0].id=obj.prePage;
-                $(".nxttn")[0].id=obj.nextPage;
-                $(".lsttn")[0].id=obj.lastPage;
+                $(".prvtn")[0].id=obj[0].prePage;
+                $(".nxttn")[0].id=obj[0].nextPage;
+                $(".lsttn")[0].id=obj[0].lastPage;
             }
         });
     })

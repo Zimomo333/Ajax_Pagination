@@ -22,14 +22,11 @@ public class AjaxServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 
 		String method = request.getParameter("method");
-		if ("getPage".equals(method)) {
-			getPage(request, response);
-		} else if ("changePage".equals(method)) {
-			changePage(request, response);
+		if ("changePage".equals(method)) {
+            changePage(request, response);
 		} else {
 			getGooList(request, response);
 		}
-
 	}
 
 	private void changePage(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,28 +36,24 @@ public class AjaxServlet extends HttpServlet {
 		String page = request.getParameter("page");
 //	System.out.println(page);
 		pageUtils = new PageUtils(page, PAGESIZE, gooService.getCounter());
-		goolist = gooService.getPageList((pageUtils.getCurrentPage() - 1) * PAGESIZE, PAGESIZE);
+		goolist = gooService.getPageList((Integer.parseInt(page) - 1) * PAGESIZE, PAGESIZE);
 		list.add(pageUtils);
-		list.add(goolist);
+        list.add(goolist);
 		String string = JSON.toJSONString(list);
 //	System.out.println(string);
-		response.getWriter().write(string);
-	}
-
-	private void getPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json;charset=UTF-8");
-		String string = JSON.toJSONString(pageUtils);
-// 	System.out.println(string);
 		response.getWriter().write(string);
 	}
 
 	private void getGooList(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("application/json;charset=UTF-8");
 		List<Goods> goolist = null;
+        List<Object> list = new ArrayList<>();
 		String currentPage = null;
 		pageUtils = new PageUtils(currentPage, PAGESIZE, gooService.getCounter());
 		goolist = gooService.getPageList((pageUtils.getCurrentPage() - 1) * PAGESIZE, PAGESIZE);
-		String string = JSON.toJSONString(goolist);
+        list.add(pageUtils);
+        list.add(goolist);
+		String string = JSON.toJSONString(list);
 //	System.out.println(string);
 		response.getWriter().write(string);
 	}
